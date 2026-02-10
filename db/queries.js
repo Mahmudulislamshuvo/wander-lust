@@ -38,4 +38,16 @@ const checkExistingTravelPlan = async (query) => {
   }
 };
 
-export { getAllTravelPlans, checkExistingTravelPlan };
+const getTravelPlanBySlug = async (slug) => {
+  try {
+    const plan = await TravelPlan.findOne({ slug }).lean();
+    if (!plan) {
+      return null;
+    }
+    return JSON.parse(JSON.stringify(plan));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getAllTravelPlans, checkExistingTravelPlan, getTravelPlanBySlug };
