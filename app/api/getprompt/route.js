@@ -1,3 +1,5 @@
+import { checkExistingTravelPlan } from "@/db/queries";
+import TravelPlan from "@/schema/travelplanSchema";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -5,8 +7,14 @@ export async function POST(request) {
   const userPrompt = searchParams.get("prompt") || "A surprise destination";
 
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const existingPlan = await checkExistingTravelPlan(userPrompt);
 
+    if (existingPlan) {
+      console.log("Match found in MongoDB!");
+      return NextResponse.json(existingPlan);
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY;
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
     const promptWithInstructions = `
@@ -36,33 +44,20 @@ export async function POST(request) {
         }
       }
       Important for Slug: 
-      1. Always use numbers for the day count (even if input says 'three', use '3').
-      2. Keep it lowercase and use hyphens between words.
-      3. Example: 'three days tour plan for paris' -> '3-days-paris'.
+      1. Always use numbers (e.g., '3' instead of 'three').
+      2. Lowercase and hyphens (e.g., '3-days-paris').
       
-      General Rules: DO NOT provide direct image URLs. Provide only Unsplash search queries. Respond ONLY with valid JSON.
+      General Rules: Respond ONLY with valid JSON.
     `;
 
     const requestBody = {
-      contents: [
-        {
-          parts: [
-            {
-              text: promptWithInstructions,
-            },
-          ],
-        },
-      ],
-      generationConfig: {
-        responseMimeType: "application/json",
-      },
+      contents: [{ parts: [{ text: promptWithInstructions }] }],
+      generationConfig: { responseMimeType: "application/json" },
     };
 
     const response = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
     });
 
@@ -79,9 +74,14 @@ export async function POST(request) {
       const jsonResponse = JSON.parse(data.candidates[0].content.parts[0].text);
 
       try {
-        const data = await "";
-      } catch (error) {
-        console.log(error);
+        await TravelPlan.create({
+          ...jsonResponse,
+          userPrompt: userPrompt,
+          createdAt: new Date(),
+        });
+        console.log("New plan saved to MongoDB!");
+      } catch (dbError) {
+        console.error("Error saving to MongoDB:", dbError);
       }
 
       return NextResponse.json(jsonResponse);
@@ -92,7 +92,7 @@ export async function POST(request) {
       { status: 500 },
     );
   } catch (error) {
-    console.error("Error fetching Gemini:", error);
+    console.error("Error in POST route:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
