@@ -1,20 +1,18 @@
 import TravelPlan from "@/schema/travelplanSchema";
 import generateSlug from "@/utils/getSlugFromPrompt";
-import mongoose from "mongoose";
 
 const getAllTravelPlans = async () => {
   try {
-    const allTravelPlnas = await TravelPlan.find({}).lean();
+    const latestPlans = await TravelPlan.find({})
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .lean();
 
-    if (!allTravelPlnas || allTravelPlnas.length === 0) {
+    if (!latestPlans || latestPlans.length === 0) {
       return [];
     }
 
-    allTravelPlnas
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .splice(3);
-
-    return allTravelPlnas;
+    return latestPlans;
   } catch (error) {
     console.log(error);
   }
