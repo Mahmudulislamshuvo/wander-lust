@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar/Navbar";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { dbConnect } from "@/service/mongodb";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,7 +11,8 @@ export const metadata = {
     "Plan your perfect trip with AI-powered itineraries tailored to your preferences.",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  await dbConnect();
   return (
     <html lang="en">
       <body

@@ -1,26 +1,61 @@
-const cleanTravelData = (apiResponse) => {
+function fixGeminiJsonResponse(rawResponse) {
   try {
-    // ১. চেক করা হচ্ছে travel_plan কি স্ট্রিং আকারে আছে কি না
-    if (
-      apiResponse.travel_plan &&
-      typeof apiResponse.travel_plan === "string"
-    ) {
-      // ২. স্ট্রিংটিকে আসল JSON অবজেক্টে কনভার্ট করা (এতেই সব \ চলে যাবে)
-      const parsedData = JSON.parse(apiResponse.travel_plan);
+    let fixed = rawResponse;
 
-      // ৩. অনেক সময় ভেতরে আবার travel_plan নামে রুট key থাকে, সেটা হ্যান্ডেল করা
-      if (parsedData.travel_plan) {
-        return parsedData.travel_plan;
-      }
-      return parsedData;
+    // 1️⃣ যদি পুরো response string হয় → clean + parse
+    if (typeof fixed === "string") {
+      fixed = fixed
+        .replace(/```json/gi, "")
+        .replace(/```/g, "")
+        .trim();
+
+      fixed = JSON.parse(fixed);
     }
 
-    // যদি আগে থেকেই ঠিক থাকে, তাহলে যা আছে তাই ফেরত দিবে
-    return apiResponse;
-  } catch (error) {
-    console.error("Error parsing JSON:", error);
-    return null;
-  }
-};
+    // 2️⃣ যদি travel_plan string হয় → parse
+    if (
+      typeof fixed === "object" &&
+      fixed !== null &&
+      typeof fixed.travel_plan === "string"
+    ) {
+      fixed.travel_plan = JSON.parse(
+        fixed.travel_plan
+          .replace(/```json/gi, "")
+          .replace(/```/g, "")
+          .trim(),
+      );
+    }
 
-export { cleanTravelData };
+    // 3️⃣ যদি double wrapped হয় → unwrap
+    if (fixed && fixed.travel_plan && fixed.travel_plan.travel_plan) {
+      fixed.travel_plan = fixed.travel_plan.travel_plan;
+    }
+
+    // 4️⃣ Final check
+    if (
+      typeof fixed !== "object" ||
+      fixed === null ||
+      !fixed.travel_plan ||
+      typeof fixed.travel_plan !== "object"
+    ) {
+      return {
+        success: false,
+        error: "Invalid Gemini response structure",
+        raw: fixed,
+      };
+    }
+
+    return {
+      success: true,
+      data: fixed,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: "Failed to fix Gemini JSON response",
+      raw: err.message || err,
+    };
+  }
+}
+
+export { fixGeminiJsonResponse as cleanTravelData };
