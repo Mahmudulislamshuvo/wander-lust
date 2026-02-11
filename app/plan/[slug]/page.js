@@ -1,3 +1,4 @@
+import Introduction from "@/components/TravelPlanPage/Introduction";
 import PannerHeader from "@/components/TravelPlanPage/PannerHeader";
 import { getTravelPlanBySlug } from "@/db/queries";
 
@@ -9,6 +10,7 @@ const TravelPlanPage = async ({ params: { slug } }) => {
   return (
     <>
       <PannerHeader data={data} />
+      <Introduction data={data} />
     </>
   );
 };
