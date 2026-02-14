@@ -8,19 +8,17 @@ const HomeTravelCard = async ({ plan }) => {
   //   getImageUrl(plan?.hero_section?.cover_image?.query),
   // );
 
-  console.log(getImageUrl(plan?.hero_section?.cover_image?.query));
-
   return (
     <div
       key={plan.slug}
       className="group relative aspect-[4/5] md:aspect-[3/4] rounded-3xl overflow-hidden cursor-pointer"
     >
       <Image
-        src={getImageUrl(plan?.hero_section?.cover_image?.query)}
+        src={plan?.hero_section?.cover_image?.url}
         alt={plan.hero_section.destination_name}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        width={400}
-        height={500}
+        width={800}
+        height={600}
         // placeholder="blur"
         // blurDataURL={base64}
         unoptimized={true}

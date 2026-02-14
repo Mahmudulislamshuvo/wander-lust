@@ -1,4 +1,3 @@
-import { getImageUrl } from "@/utils/getImages";
 import Image from "next/image";
 
 const ItineraryHighlight = ({ data }) => {
@@ -29,7 +28,7 @@ const ItineraryHighlight = ({ data }) => {
               {/* Day Thumbnail Image */}
               <div className="aspect-[16/9] w-full overflow-hidden relative">
                 <Image
-                  src={getImageUrl(day.thumbnail_image.query)}
+                  src={day?.thumbnail_image?.url}
                   alt={day.theme_title}
                   className="w-full h-full object-cover group-hover:scale-105 duration-700 opacity-90"
                   height={500}

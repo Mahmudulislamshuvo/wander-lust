@@ -7,9 +7,7 @@ const AiPromptField = () => {
   return (
     <div className="w-full max-w-3xl mb-24 relative group z-20">
       <GlowEffect />
-      <Suspense fallback={<div className="text-white">Loading...</div>}>
-        <TextAreaAndSubmit />
-      </Suspense>
+      <TextAreaAndSubmit />
       <QuickSuggestion />
     </div>
   );

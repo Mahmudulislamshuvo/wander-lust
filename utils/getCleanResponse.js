@@ -2,7 +2,6 @@ function fixGeminiJsonResponse(rawResponse) {
   try {
     let fixed = rawResponse;
 
-    // 1️⃣ যদি পুরো response string হয় → clean + parse
     if (typeof fixed === "string") {
       fixed = fixed
         .replace(/```json/gi, "")
@@ -26,7 +25,6 @@ function fixGeminiJsonResponse(rawResponse) {
       );
     }
 
-    // 3️⃣ যদি double wrapped হয় → unwrap
     if (fixed && fixed.travel_plan && fixed.travel_plan.travel_plan) {
       fixed.travel_plan = fixed.travel_plan.travel_plan;
     }
