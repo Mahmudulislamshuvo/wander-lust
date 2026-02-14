@@ -1,12 +1,9 @@
-import { getImageUrl } from "@/utils/getImages";
 import { getBlurData } from "@/utils/getBlurEffect";
 import Image from "next/image";
 import { Clock } from "lucide-react";
 
 const HomeTravelCard = async ({ plan }) => {
-  // const { base64 } = await getBlurData(
-  //   getImageUrl(plan?.hero_section?.cover_image?.query),
-  // );
+  const { base64 } = await getBlurData(plan?.hero_section?.cover_image?.url);
 
   return (
     <div
@@ -19,10 +16,8 @@ const HomeTravelCard = async ({ plan }) => {
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         width={800}
         height={600}
-        // placeholder="blur"
-        // blurDataURL={base64}
-        unoptimized={true}
-        referrerPolicy="no-referrer"
+        placeholder="blur"
+        blurDataURL={base64}
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>

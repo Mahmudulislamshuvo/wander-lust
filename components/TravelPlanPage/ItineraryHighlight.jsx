@@ -28,7 +28,10 @@ const ItineraryHighlight = ({ data }) => {
               {/* Day Thumbnail Image */}
               <div className="aspect-[16/9] w-full overflow-hidden relative">
                 <Image
-                  src={day?.thumbnail_image?.url}
+                  src={
+                    day?.thumbnail_image?.url ||
+                    "/photo-1502602898657-3e91760cbb34.avif"
+                  }
                   alt={day.theme_title}
                   className="w-full h-full object-cover group-hover:scale-105 duration-700 opacity-90"
                   height={500}

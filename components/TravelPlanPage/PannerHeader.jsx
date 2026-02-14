@@ -4,9 +4,7 @@ import { Clock } from "lucide-react";
 import Image from "next/image";
 
 const PannerHeader = async ({ data }) => {
-  // const { base64 } = await getBlurData(
-  //   getImageUrl(data?.hero_section?.cover_image?.query),
-  // );
+  const { base64 } = await getBlurData(data?.hero_section?.cover_image?.url);
 
   return (
     <header className="relative w-full h-[85vh] min-h-[600px] overflow-hidden group">
@@ -17,8 +15,8 @@ const PannerHeader = async ({ data }) => {
         className="absolute inset-0 w-full h-full object-cover transform scale-105 group-hover:scale-100 ease-in-out duration-700"
         width={1000}
         height={1786}
-        // placeholder="blur"
-        // blurDataURL={base64}
+        placeholder="blur"
+        blurDataURL={base64}
       />
 
       {/* <!-- Gradient Overlay --> */}

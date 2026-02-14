@@ -7,6 +7,7 @@ const TravelPlanPage = async ({ params: { slug } }) => {
   const data = await getTravelPlanBySlug(slug);
 
   const daily_plans = data?.itinerary_section?.daily_plans;
+
   const allSchedules = daily_plans.flatMap((day) => day.schedule);
 
   const shuffled = allSchedules.sort(() => Math.random() - 0.5);
