@@ -16,6 +16,7 @@ const TravelPlanSchema = new mongoose.Schema({
     cover_image: {
       source: { type: String, default: "unsplash" },
       query: { type: String, required: true },
+      url: { type: String },
     },
     overview_description: { type: String, required: true },
   },
@@ -29,6 +30,7 @@ const TravelPlanSchema = new mongoose.Schema({
         thumbnail_image: {
           source: { type: String, default: "unsplash" },
           query: { type: String, required: true },
+          url: { type: String },
         },
         schedule: [
           {

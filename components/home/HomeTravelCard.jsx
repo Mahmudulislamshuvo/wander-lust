@@ -4,9 +4,11 @@ import Image from "next/image";
 import { Clock } from "lucide-react";
 
 const HomeTravelCard = async ({ plan }) => {
-  const { base64 } = await getBlurData(
-    getImageUrl(plan?.hero_section?.cover_image?.query),
-  );
+  // const { base64 } = await getBlurData(
+  //   getImageUrl(plan?.hero_section?.cover_image?.query),
+  // );
+
+  console.log(getImageUrl(plan?.hero_section?.cover_image?.query));
 
   return (
     <div
@@ -19,8 +21,10 @@ const HomeTravelCard = async ({ plan }) => {
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         width={400}
         height={500}
-        placeholder="blur"
-        blurDataURL={base64}
+        // placeholder="blur"
+        // blurDataURL={base64}
+        unoptimized={true}
+        referrerPolicy="no-referrer"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
