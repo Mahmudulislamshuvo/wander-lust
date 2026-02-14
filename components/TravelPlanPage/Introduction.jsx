@@ -74,8 +74,6 @@ const Introduction = ({ data }) => {
           const style = featureStyles[index % featureStyles.length];
           const Icon = featureIcons[index % featureIcons.length];
 
-          console.log(data);
-
           return (
             <div key={index} className="group">
               <div
