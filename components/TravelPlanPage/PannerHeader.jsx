@@ -1,5 +1,4 @@
 import { getBlurData } from "@/utils/getBlurEffect";
-import { getImageUrl } from "@/utils/getImages";
 import { Clock } from "lucide-react";
 import Image from "next/image";
 
