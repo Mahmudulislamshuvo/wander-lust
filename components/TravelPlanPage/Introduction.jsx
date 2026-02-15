@@ -61,8 +61,8 @@ const Introduction = ({ data }) => {
             Parisian Journey
           </h2>
           <p className="text-xl text-slate-500 leading-relaxed">
-            We've curated the must-see landmarks, crucial travel tips, and
-            culinary experiences into one seamless plan. Don't just visit
+            We&apos;ve curated the must-see landmarks, crucial travel tips, and
+            culinary experiences into one seamless plan. Don&apos;t just visit
             Paris—live it.
           </p>
         </div>
