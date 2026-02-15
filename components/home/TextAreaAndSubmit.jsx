@@ -12,7 +12,7 @@ const TextAreaAndSubmit = () => {
 
   const handleGeneratePlan = async () => {
     if (!prompt.trim()) {
-      alert("Please enter a destination!"); // অথবা toast.error(...)
+      alert("Please enter a destination!");
       return;
     }
 
