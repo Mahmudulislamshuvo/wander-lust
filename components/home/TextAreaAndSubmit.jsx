@@ -11,16 +11,25 @@ const TextAreaAndSubmit = () => {
   const router = useRouter();
 
   const handleGeneratePlan = async () => {
-    if (!prompt.trim()) return;
+    if (!prompt.trim()) {
+      alert("Please enter a destination!"); // অথবা toast.error(...)
+      return;
+    }
 
     try {
       setLoading(true);
-      const newTravelPlan = await createNewTravelPlan(prompt);
-      if (newTravelPlan) {
-        router.push(`/plan/${newTravelPlan.slug}`);
+      const result = await createNewTravelPlan(prompt);
+
+      if (result && result.success) {
+        setPrompt("");
+        router.push(`/plan/${result.data.slug}`);
+      } else {
+        alert(result?.message || "Something went wrong!");
+        console.error(result?.message);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Network or Client Error:", error);
+      alert("Failed to connect to server.");
     } finally {
       setLoading(false);
     }

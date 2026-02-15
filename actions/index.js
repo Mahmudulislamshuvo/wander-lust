@@ -115,18 +115,29 @@ export const createNewTravelPlan = async (userPrompt) => {
           userPrompt: userPrompt,
           createdAt: new Date(),
         });
-        console.log("New plan saved to MongoDB with Images!");
 
-        return JSON.parse(JSON.stringify(savedPlan));
+        return {
+          success: true,
+          data: JSON.parse(JSON.stringify(savedPlan)),
+        };
       } catch (dbError) {
         console.error("Error saving to MongoDB:", dbError);
-        return jsonResponse;
+        return {
+          success: false,
+          message: "Failed to save the plan in database.",
+        };
       }
     }
 
-    return null;
+    return {
+      success: false,
+      message: "No travel plan generated. Try a different prompt.",
+    };
   } catch (error) {
     console.error("Error in create New Travel Plan:", error);
-    return null;
+    return {
+      success: false,
+      message: "Something went wrong. Please try again later.",
+    };
   }
 };
