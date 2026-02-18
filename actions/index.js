@@ -3,11 +3,14 @@
 import { checkExistingTravelPlan } from "@/db/queries";
 import TravelPlan from "@/schema/travelplanSchema";
 import { getUnsplashImage } from "@/utils/getUnsplashImage";
+import { dbConnect } from "@/service/mongodb"; // Import dbConnect
 
 export const createNewTravelPlan = async (userPrompt) => {
   if (!userPrompt) return null;
 
   try {
+    await dbConnect();
+
     const existingPlan = await checkExistingTravelPlan(userPrompt);
 
     if (existingPlan) {
